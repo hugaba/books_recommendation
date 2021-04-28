@@ -420,7 +420,6 @@ def get_html(user_id: int, category: str) ->str:
     html = HTML
     # check if user_id is in database
     if user_id not in ratings['user_id'].unique() and user_id is not None:
-        #html += f"""<p>User id {user_id} not in database</p>"""
         return user_id
 
     if user_id:
