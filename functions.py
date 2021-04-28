@@ -8,16 +8,8 @@ loader = np.load('data/csr_matrix.npz')
 book_matrix = csr_matrix((loader['data'], loader['indices'], loader['indptr']), shape=loader['shape'])
 
 # load datasets
-# books
-# books = pd.read_csv('data/books.csv')
-# books_tags
-# books_tags = pd.read_csv('data/book_tags.csv')
-# tags
-# tags = pd.read_csv('data/tags.csv')
 # ratings
 ratings = pd.read_csv('data/ratings.csv')
-# to_read
-# to_read = pd.read_csv('data/to_read.csv')
 # books_with_cat
 books = pd.read_csv('data/books_with_cat.csv')
 
