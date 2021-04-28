@@ -5,7 +5,9 @@ by Imad, Nicolas & Hugo
 ## prerequisite:
 ### Create your virtual environment
 Open the folder in which you import the github files
+
 Open a terminal and create a new virtual environment : python3 -m venv env
+
 Install the required libraries: pip3 install -r requirements.txt
 
 ### Download files
@@ -19,10 +21,14 @@ Execute data.sh with the command line: sh -x ./data.sh
 
 ## Start programm
 open a terminal in the main folder
+
 activate your virtual environment: source venv/bin/activate
+
 start the api: uvicorn api:app --reload
+
 go on this url: http://127.0.0.1:8000/recommandation
-You can enter (or not) a user id
-You can choose (or not) a category
-Click the submit button to have a suggestion of book
-After having recommention books, you can go back on the first page by clicking the home button on the top left of the page
+
+- You can enter (or not) a user id
+- You can choose (or not) a category
+- Click the submit button to have a suggestion of book
+- After having recommention books, you can go back on the first page by clicking the home button on the top left of the page
