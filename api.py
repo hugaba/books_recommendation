@@ -1,0 +1,19 @@
+from fastapi import FastAPI, Request, Form
+from fastapi.templating import Jinja2Templates
+from functions import *
+from fastapi.responses import HTMLResponse
+
+app = FastAPI()
+templates = Jinja2Templates(directory="templates/")
+
+
+@app.get("/recommandation")
+def form_post(request: Request):
+    result = ""
+    return templates.TemplateResponse('recommandation.html', context={'request': request, 'result': result})
+
+
+@app.post('/recommandation', response_class=HTMLResponse)
+def form_post(request: Request, user_id: int = Form(None), category: str = Form(None)):
+    html = get_html(user_id, category)
+    return html
