@@ -1,7 +1,7 @@
 # books_recommendation
 
 
-# prerequisite: download weight files
+# prerequisite: download files
 
 Open the data folder
 
