@@ -22,9 +22,9 @@ Execute data.sh with the command line: sh -x ./data.sh
 ## Start programm
 open a terminal in the main folder
 
-activate your virtual environment: source venv/bin/activate
+activate your virtual environment with the command line: source venv/bin/activate
 
-start the api: uvicorn api:app --reload
+start the api with the command line: uvicorn api:app --reload
 
 go on this url: http://127.0.0.1:8000/recommandation
 
