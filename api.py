@@ -14,9 +14,9 @@ def form_post(request: Request):
 
 
 @app.post('/recommandation', response_class=HTMLResponse)
-def form_post(request: Request, user_id: int = Form(None), category: str = Form(None)):
-    if get_html(user_id, category) == user_id:
+def form_post(request: Request, user_id: int = Form(None), category: str = Form(None), checkboxcategory: bool = Form(False)):
+    if get_html(user_id, category, checkboxcategory) == str(user_id):
         result = f'User id {user_id} not in database'
         return templates.TemplateResponse('recommandation.html', context={'request': request, 'result': result})
-    html = get_html(user_id, category)
+    html = get_html(user_id, category, checkboxcategory)
     return html

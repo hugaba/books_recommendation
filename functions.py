@@ -8,16 +8,8 @@ loader = np.load('data/csr_matrix.npz')
 book_matrix = csr_matrix((loader['data'], loader['indices'], loader['indptr']), shape=loader['shape'])
 
 # load datasets
-# books
-# books = pd.read_csv('data/books.csv')
-# books_tags
-# books_tags = pd.read_csv('data/book_tags.csv')
-# tags
-# tags = pd.read_csv('data/tags.csv')
 # ratings
 ratings = pd.read_csv('data/ratings.csv')
-# to_read
-# to_read = pd.read_csv('data/to_read.csv')
 # books_with_cat
 books = pd.read_csv('data/books_with_cat.csv')
 
@@ -100,7 +92,9 @@ def get_top_n_books_by_category(category: str, n_books: int, user_id: int = None
         read_books = ratings[ratings['user_id'] == user_id]['book_id'].unique()
 
     # select books in the required category
-    cat_books = books[books['category'] == category]
+    cat_books = books[(books['category'] == category) & (books['average_rating'] > 4.5)]
+    if not len(cat_books) > 5:
+        cat_books = books[(books['category'] == category) & (books['average_rating'] > 3.5)]
     # select only the books which aren't in the read_books list
     cat_books = cat_books[~cat_books['book_id'].isin(read_books)]
 
@@ -146,7 +140,7 @@ def get_top_n_books(n_books: int, user_id: int = None) -> list:
         read_books = ratings[ratings['user_id'] == user_id]['book_id'].unique()
 
     # select books
-    best_books = books[books['average_rating'] > 3.5]
+    best_books = books[books['average_rating'] > 4.5]
     # select only the books which arn't in the read_books list
     best_books = best_books[~best_books['book_id'].isin(read_books)]
 
@@ -224,7 +218,7 @@ def get_top_n_books_by_author(author: str, user_id: int, n_books: int) -> list:
     """
     # get list of books already read by user (if new user user_id = None and read_books stay empty)
     read_books = []
-    if user_id != None:
+    if user_id is not None:
         read_books = ratings[ratings['user_id'] == user_id]['book_id'].unique()
 
     # select books by the required author
@@ -251,8 +245,8 @@ def get_top_n_books_by_author(author: str, user_id: int, n_books: int) -> list:
         # using weighted_rating formula from IMDB
         # https://www.datacamp.com/community/tutorials/recommender-systems-python
         weighted_rating = (book_count * avg_book_rating / (
-                    book_count + minimum_book_count)) + minimum_book_count * avg_rating / (
-                                      book_count + minimum_book_count)
+                book_count + minimum_book_count)) + minimum_book_count * avg_rating / (
+                                  book_count + minimum_book_count)
         top_books.append(weighted_rating)
     top_books_dict = {
         'book_id': df_books_auteur['book_id'].unique(),
@@ -276,7 +270,6 @@ categories = ['action & adventure', 'fantasy', 'romance', 'mystery & thriller', 
               'self development', 'dystopia', 'paranormal romance', 'anthology', 'poetry',
               'cookbooks', 'essay', 'drama', 'other']
 
-
 HTML = """
         <html>
             <head>
@@ -285,8 +278,6 @@ HTML = """
             </head>
             <body>
                 <a href="http://127.0.0.1:8000/recommandation" class="btn btn-info" role="button">Home page</a>
-                <br>
-                <br>
         """
 
 END = """
@@ -296,20 +287,22 @@ END = """
 
 NEAREST_USER_HTML = """
                     <div class="text-center">
+                    <hr/>
                         <p class="h3">
                             Top books based on your nearest users
                         </p>
+                    <hr/>
                     </div>
-                    <br>
                         """
 
 GENERAL_HTML = """
                     <div class="text-center">
+                    <hr/>
                         <p class="h3">
                             General Top books
                         </p>
+                    <hr/>
                     </div>
-                    <br>
                         """
 
 
@@ -326,7 +319,7 @@ def get_pictures(book_list: list) -> str:
     for id in range(len(book_list)):
         html += f"""
                         <div class="col-sm-2">
-                            <a href="#" title=""><img src="{books[books['book_id'] == book_list[id]]['image_url'].values[0]}" class="img-responsive"></a> 
+                                <img src="{books[books['book_id'] == book_list[id]]['image_url'].values[0]}" class="center-block">
                         </div>
                         """
     html += """
@@ -348,12 +341,15 @@ def get_html_names(book_list: list) -> str:
     """
     for id in range(len(book_list)):
         html += f"""
-                    <div class="col-sm-2">{book_list[id]}</div>
+                    <div class="text-center">
+                        <div class="col-sm-2">
+                            {book_list[id]}
+                        </div>
+                    </div>
                 """
     html += """
                 <div class="col-sm-1"></div>
             </div>
-            <br>
     """
     return html
 
@@ -366,61 +362,76 @@ def get_html_author(author: str) -> str:
     """
     return f"""
                 <div class="text-center">
+                <hr/>
                     <p class="h3">
                         Top books based on your favorite author {author}
                     </p>
+                <hr/>
                 </div>
-                <br>
                 """
 
 
-def get_html_category(category: list) -> str:
+def get_html_category(category: list, cat_row: int = 0) -> str:
     """
     create the html header for category
     :param category: list: list of book categories
+    :param cat_row: int: index of category row (used for displaying all categories)
     :return: str: html title for category
     """
     if len(category) == 1:
         return f"""
-                    <div class="text-center">
-                        <p class="h3">
-                            Top books based on the {category[0]} category
-                        </p>
-                    </div>
-                    <br>
-                    """
+                <div class="text-center">
+                <hr/>
+                    <p class="h3">
+                        Top books based on the {category[0]} category
+                    </p>
+                <hr/>
+                </div>
+                """
     else:
-        html = f"""
-                    <div class="text-center">
-                        <p class="h3">
-                            Top books by category
-                        </p>
-                    </div>
-                    <br>
-                    <div class="form-group row">
-                        <div class="col-sm-1"></div>
-                    """
-        for cat in category:
-            html += f"""<div class="col-sm-2">{cat}</div>"""
+        html = ''
+        if cat_row == 0:
+            html += f"""
+                <div class="text-center">
+                <hr/>
+                    <p class="h3">
+                        Top books by category
+                    </p>
+                <hr/>
+                </div>
+                """
         html += """
-                        <div class="col-sm-1"></div>
-                    </div>
-                    <br>
-            """
+                <div class="form-group row">
+                    <div class="col-sm-1"></div>
+                """
+        for cat in category:
+            html += f"""
+                    <div class="text-center">
+                        <div class="col-sm-2">
+                            <p class="h4">
+                                {cat}
+                            </p>
+                        </div>
+                    </div>"""
+        html += """
+                    <div class="col-sm-1"></div>
+                </div>
+                """
         return html
 
 
-def get_html(user_id: int, category: str) ->str:
+def get_html(user_id: int, category: str, all_cat: bool) -> str:
     """
     create an HTML page
     :param user_id: int: id of user (can be None)
-    :param category: str: book category (can be None
+    :param category: str: book category (can be None)
+    :param all_cat: bool: if True get one book for all category else top 5 categories
     :return: str: html page
     """
     html = HTML
     # check if user_id is in database
     if user_id not in ratings['user_id'].unique() and user_id is not None:
-        return user_id
+        return str(user_id)
 
     if user_id:
         # get nearest_users
@@ -449,8 +460,11 @@ def get_html(user_id: int, category: str) ->str:
             html += get_html_category([category]) + get_pictures(list_of_books) + get_html_names(books_name_cat)
             return html + END
         else:
-            # get top 5 categories
-            list_of_cat = categories[:5]
+            if all_cat:
+                list_of_cat = categories
+            else:
+                # get top 5 categories
+                list_of_cat = categories[:5]
             # initialize list
             list_of_books = []
             # get list of book ids (1 per category)
@@ -459,7 +473,14 @@ def get_html(user_id: int, category: str) ->str:
             # get book names from book list
             books_name_cat = (get_book_name(list_of_books))
             # convert to html
-            html += get_html_category(list_of_cat) + get_pictures(list_of_books) + get_html_names(books_name_cat)
+            remain = 0
+            if len(list_of_cat) % 5 != 0:
+                remain = 1
+            for i in range(0, len(list_of_cat) // 5 + remain):
+                start = i * 5
+                end = start + 5
+                html += get_html_category(list_of_cat[start:end], i) + get_pictures(
+                    list_of_books[start:end]) + get_html_names(books_name_cat[start:end])
             return html + END
     else:
         # get the id of top books for whole users
@@ -477,8 +498,12 @@ def get_html(user_id: int, category: str) ->str:
             html += get_html_category([category]) + get_pictures(list_of_books) + get_html_names(books_name_cat)
             return html + END
         else:
-            # get top 5 categories
-            list_of_cat = categories[:5]
+            print(all_cat)
+            if all_cat:
+                list_of_cat = categories
+            else:
+                # get top 5 categories
+                list_of_cat = categories[:5]
             # initialize list
             list_of_books = []
             # get list of book ids (1 per category)
@@ -487,5 +512,11 @@ def get_html(user_id: int, category: str) ->str:
             # get list of book names
             books_name_cat = get_book_name(list_of_books)
             # convert to html
-            html += get_html_category(list_of_cat) + get_pictures(list_of_books) + get_html_names(books_name_cat)
+            remain = 0
+            if len(list_of_cat) % 5 != 0:
+                remain = 1
+            for i in range(0, len(list_of_cat)//5 + remain):
+                start = i * 5
+                end = start + 5
+                html += get_html_category(list_of_cat[start:end], i) + get_pictures(list_of_books[start:end]) + get_html_names(books_name_cat[start:end])
             return html + END
