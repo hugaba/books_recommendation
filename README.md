@@ -30,5 +30,6 @@ go on this url: http://127.0.0.1:8000/recommandation
 
 - You can enter (or not) a user id
 - You can choose (or not) a category
+- If you don't choose a specific category you can check the checkbox to display all categories (by default only top 5 categories will appear)
 - Click the submit button to have a suggestion of book
-- After having recommention books, you can go back on the first page by clicking the home button on the top left of the page
+- After having some books recommended, you can go back on the first page by clicking the home button on the top left of the page
