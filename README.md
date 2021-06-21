@@ -28,17 +28,31 @@ start the api with the command line: uvicorn api:app --reload
 
 go on this url: http://127.0.0.1:8000/recommandation
 
+<img src="https://github.com/hugaba/books_recommendation/blob/main/pics/principal.png">
+
 - You have an user id : 
   - Enter user id 
   - You can choose (or not) a category
   - If you don't choose a specific category you can check the checkbox to display all categories (by default only top 5 categories will appear)
-  - Click the submit button to have a suggestion of book
-  <img src="https://github.com/hugaba/books_recommendation/blob/main/pics/principal.png">
+  - Click the submit button to have a suggestion of book:
+    - top 5 books from nearest users
+    - top 5 books from favourite author
+    - top 5 books from choosen category (if no category selected top one book from top 5 category)
+  
+<img src="https://github.com/hugaba/books_recommendation/blob/main/pics/id_nearest_users.png">
+<img src="https://github.com/hugaba/books_recommendation/blob/main/pics/id_fav_author.png">
+<img src="https://github.com/hugaba/books_recommendation/blob/main/pics/id_top5_cats.png">
+  
   
 - You don't have an user id :
   - leave the user id zone blank
   - You can choose (or not) a category
   - If you don't choose a specific category you can check the checkbox to display all categories (by default only top 5 categories will appear)
-  - Click the submit button to have a suggestion of book
+  - Click the submit button to have a suggestion of book:
+    - top 5 books from goodreads database
+    - top 5 books from choosen category (if no category selected top one book from top 5 category)
+
+<img src="https://github.com/hugaba/books_recommendation/blob/main/pics/general_top5cats.png">
+
 - After having some books recommended, you can go back on the first page by clicking the home button on the top left of the page
 
