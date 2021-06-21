@@ -1,6 +1,6 @@
 # books_recommendation
 by Imad, Nicolas & Hugo
-link to colab used to make recommandation system : [colab](https://colab.research.google.com/drive/1RgHvqMhhhpD9kAAPoGrU5kRfyjHpVKMa?usp=sharing)
+<br/>link to colab used to make recommandation system : [colab](https://colab.research.google.com/drive/1RgHvqMhhhpD9kAAPoGrU5kRfyjHpVKMa?usp=sharing)
 
 # content
 - data folder: contains data.sh file to load the csv
