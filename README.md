@@ -1,6 +1,13 @@
 # books_recommendation
 by Imad, Nicolas & Hugo
 
+# content
+data folder: 
+database.ipynb : ipynb file to create the sql database
+
+<img src="https://github.com/hugaba/books_recommendation/blob/main/pics/sql_database.png">
+
+
 # Getting Started
 ## prerequisite:
 ### Create your virtual environment
