@@ -2,13 +2,13 @@
 by Imad, Nicolas & Hugo
 
 # content
-data folder: contains data.sh file to load the csv
-pics: contains pics for README.md
-templates: contains html template for main page
-api.py: main file for the api
-functions.py: functions used to make the recommandation book
-requirements.txt: requirements to make the virtual environments
-database.ipynb : ipynb file to create the sql database
+- data folder: contains data.sh file to load the csv
+- pics: contains pics for README.md
+- templates: contains html template for main page
+- api.py: main file for the api
+- functions.py: functions used to make the recommandation book
+- requirements.txt: requirements to make the virtual environments
+- database.ipynb : ipynb file to create the sql database
 
 <img src="https://github.com/hugaba/books_recommendation/blob/main/pics/sql_database.png">
 
